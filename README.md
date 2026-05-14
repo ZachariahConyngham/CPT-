@@ -34,7 +34,26 @@ scare enemy - starts in 2 rooms, forces player to run in a random direction when
 - Analysed task 
 - Discussed potential ideas
 
-
 ## 6-5-2026
 - built functions for rooms
 - created functions for player actions
+
+## 8-5-2026
+- Documentation and planning
+- Started creating the player class
+
+## 11-5-2026
+- fixed move function
+- started data dictionary
+
+## 14-5-2026
+- worked on comparison of procedural language and object oriented approach
+- 
+
+## 15-5-2026
+- Worked on DFD
+- Worked on the map function
+
+## -5-2026
+- 
+- 

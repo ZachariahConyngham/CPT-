@@ -54,6 +54,14 @@ scare enemy - starts in 2 rooms, forces player to run in a random direction when
 - Worked on DFD
 - Worked on the map function
 
-## -5-2026
+## 18-5-2026
+- Reworked room class
+- Worked on success criteria
+
+## 20-5-2026
+- Coded the corridors
 - 
+
+## 22-5-2026
+- worked on fixing the bug where is couldn't move from room to room
 - 

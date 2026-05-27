@@ -9,11 +9,11 @@ def clear():  # Clears the terminal
 
 global removedcorridor
 global corridors
-
+global move
 turn = 0
 placementcol = [0, 2, 4, 6]
 placementrow = [0, 2, 4, 6]
-
+move = "jim"
 removedcorridor = [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6]
 random.shuffle(removedcorridor)
 
@@ -240,6 +240,7 @@ class player:
     def move(self, poscol, posrow, move):
         self.poscol = poscol
         self.posrow = posrow
+        
         global blocked
         global playerposcol
         global playerposrow
@@ -257,7 +258,7 @@ class player:
                         if placementcol[0] == poscol-2 and placementrow[0] == posrow:
                             legal = 0
                             break
-                        for i in range(0,5):
+                        for i in range(0,6):
                             if removedcorridor[i] == posrow:
                                 if corridors[removedcorridor[i]][0] == self.poscol-1:
                                     blocked = "yes"
@@ -281,7 +282,7 @@ class player:
                         if placementcol[0] == poscol+2 and placementrow[0] == posrow:
                             legal = 0
                             break
-                        for i in range(0,5):
+                        for i in range(0,6):
                             if removedcorridor[i] == posrow:
                                 if corridors[removedcorridor[i]][0] == self.poscol+1:
                                     blocked = "yes"
@@ -304,7 +305,7 @@ class player:
                         if placementcol[0] == poscol and placementrow[0] == posrow+2:
                             legal = 0
                             break
-                        for i in range(0,5):
+                        for i in range(0,6):
                             if removedcorridor[i] == self.posrow+1:
                                 if corridors[removedcorridor[i]][0] == self.poscol:
                                     blocked = "yes"
@@ -327,7 +328,7 @@ class player:
                         if placementcol[0] == poscol and placementrow[0] == posrow-2:
                             legal = 0
                             break
-                        for i in range(0,5):
+                        for i in range(0,6):
                             if removedcorridor[i] == self.posrow-1:
                                 if corridors[removedcorridor[i]][0] == self.poscol:
                                     blocked = "yes"
@@ -349,63 +350,72 @@ class player:
             else: 
                 x = 0
                 while move != "no":
+                    blocked = "no"
                     match move:
                         case "left":
-                            for i in range(0,5):
+                            for i in range(0,6):
                                 if removedcorridor[i] == self.posrow:
-                                    if corridors[[removedcorridor[i]][0]] == self.poscol-1:
+                                    if corridors[removedcorridor[i]][0] == self.poscol-1:
                                         blocked = "yes"
                             if blocked == "yes":
                                 move = random.choice(randmove)
                             else:
                                 if self.poscol +2 > 7:
                                     move = random.choice(randmove)
+                                elif placementcol[0] == poscol+2 and placementrow[0] == posrow:
+                                    random.choice(randmove)
                                 else:
                                     self.poscol +=2
                                     break
                         case "right":
-                            for i in range(0,5):
+                            for i in range(0,6):
                                 if removedcorridor[i] == self.posrow:
-                                    if corridors[[removedcorridor[i]][0]] == self.poscol-1:
+                                    if corridors[removedcorridor[i]][0]== self.poscol-1:
                                         blocked = "yes"
                             if blocked == "yes":
                                 move = random.choice(randmove)
                             else:
                                 if self.poscol -2 < 0:
                                     move = random.choice(randmove)
+                                elif placementcol[0] == poscol-2 and placementrow[0] == posrow:
+                                    random.choice(randmove)
                                 else:
                                     self.poscol -=2
                                     break
                         case "down":
-                            for i in range(0,5):
+                            for i in range(0,6):
                                 if removedcorridor[i] == self.posrow-1:
-                                    if corridors[[removedcorridor[i]][0]] == self.poscol:
+                                    if corridors[removedcorridor[i]][0] == self.poscol:
                                         blocked = "yes"
+                            if blocked == "yes":
+                                move = random.choice(randmove)
+                            else:
+                                if self.posrow - 2 < 0:
+                                    move = random.choice(randmove)
+                                elif placementcol[0] == poscol and placementrow[0] == posrow-2:
+                                    move = random.choice(randmove)
+                                else: 
+                                    self.posrow -=2
+                                    break
+                        case "up":
+                            for i in range(0,6):
+                                    if removedcorridor[i] == self.posrow+1:
+                                        if corridors[removedcorridor[i]][0] == self.poscol:
+                                            blocked = "yes"
                             if blocked == "yes":
                                 move = random.choice(randmove)
                             else:
                                 if self.posrow +2 > 7:
                                     move = random.choice(randmove)
-                                else: 
-                                    self.posrow +=2
-                                    break
-                        case "up":
-                            for i in range(0,5):
-                                    if removedcorridor[i] == self.posrow-1:
-                                        if corridors[[removedcorridor[i]][0]] == self.poscol:
-                                            blocked = "yes"
-                            if blocked == "yes":
-                                move = random.choice(randmove)
-                            else:
-                                if self.posrow -2 < 0:
+                                elif placementcol[0] == poscol and placementrow[0] == posrow+2:
                                     move = random.choice(randmove)
                                 else:
-                                    self.posrow -=2
+                                    self.posrow +=2
                                     break
                         case _:
                             move = random.choice(randmove)
                     x += 1
-                    if x > 20:
+                    if x > 100:
                         break
                 player2poscol = self.poscol
                 player2posrow = self.posrow
@@ -466,7 +476,8 @@ P1 = player(0, 0)
 P2 = player(6, 6)
 P1.itempickup("Nothing")
 turn = 0
-while turn < 40:
+
+while turn < 50:
     blocked = "no"
     action = input("What would you like to do: ")
     match action:
@@ -490,17 +501,18 @@ while turn < 40:
                     mve = 0
                 if mve == 1:
                     print("That is not a direction you may move in. Please choose another direction.")
-                move = 0
+                move = "0"
                 input("When you are ready to continue press enter.")
         case "search"|"use":
+            P2.deathcheck(playerposcol, playerposrow)
             P1.search(playerposcol, playerposrow)
             turn+=1
             P2.move(player2poscol, player2poscol, random.choice(randmove))
             input("When you are ready to continue press enter.")
         case "map":
-#            P2.deathcheck()
+            P2.deathcheck(playerposcol, playerposrow)
             P1.map(playerposcol, playerposrow)
-            P2.move(player2poscol, player2poscol, random.choice(randmove))
+            P2.move(player2poscol, player2posrow, random.choice(randmove))
             turn+=1
             input("When you are ready to continue press enter.")
         case "rules":
@@ -516,5 +528,5 @@ while turn < 40:
             print("Welcome Admin.")
             admin = 1
     clear()
-    print(player2poscol)
-    print(player2posrow)
+#    print(player2poscol)
+#    print(player2posrow)

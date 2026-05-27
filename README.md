@@ -65,3 +65,8 @@ scare enemy - starts in 2 rooms, forces player to run in a random direction when
 ## 22-5-2026
 - worked on fixing the bug where is couldn't move from room to room
 - 
+
+# 27-5-2026
+- Worked on fixing the bugs with the anti-players movement
+- 
+

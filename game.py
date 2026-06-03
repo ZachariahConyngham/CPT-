@@ -6,16 +6,19 @@ def clear():  # Clears the terminal
         _ = os.system("cls")
     else:
         _ = os.system("clear")
-
+global blocked
+global legal
+global playerposcol 
+global playerposrow 
+global player2poscol 
+global player2posrow 
 global removedcorridor
 global corridors
 global move
-turn = 0
-placementcol = [0, 2, 4, 6]
-placementrow = [0, 2, 4, 6]
-move = "jim"
-removedcorridor = [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6]
-random.shuffle(removedcorridor)
+global turn
+global win
+global admin
+global Board
 
 corridors = { #[row][column]
 0: [1, 3, 5],
@@ -26,24 +29,18 @@ corridors = { #[row][column]
 5: [0, 2, 4, 6],
 6: [1, 3, 5],
 }
-
-global admin
-admin = 0
-
-for i in range(0,6):
-    random.shuffle(corridors[removedcorridor[i]])
-
-
-#for i in range(0,5):
-#    if corridors[removedcorridor[i][0]] == self.poscol-1:
-#        legal = 0
-#        break
-#    else: 
-#        legal = 1
-
+rules = {
+    -1: [],
+    0: ["Welcome to the ()! Your goal is to prevent the entity from escaping.", "The entity copies your movement in the opposite direction, so be careful.", "The only ways to successfully stop the entity are to either escape and lock the entity inside the cavern forever or banish the entity with a scroll of banishment"],
+    1: ["Your goal is to escape this maze by finding a key and bringing it into the exit room.", "To do this you must search every room you find until you locate the keyroom and the exit room."], # How to play game / 
+    2: ["A snake room is aroom where a snake hides in. If you search this room then you will be chased into a random adjacent room.", "A scroll room contains a scroll of banishment which will let you banish an enemy.", "A keyroom has a key in it that unlocks the exit", "If you bring a key to this room you win", "This room has nothig of importance for you"], # What each room does
+    3: ["The key allows you to escape the dungeon when brought to the exit room", "The scroll of banishment allows you to banish an enemy from this world. If that enemy if a snake it will make the room a empty room. If you manage to banish the entity you win"], # What each item does
+    4: ["Inside the () resides the entity", "The entity is trying to become a perfect replica of you so it can escape into the world", "After you make 60 actions it will have perfectly copied you and will escape leaving you trapped forever", "If it manages to catch up to you before then it will be able to copy you instantly and will then escape.", "It moves in the opposite direction of your movements when it can but if it can't it will move randomly.", "If you take a passive action like checking your map or searching the room you are in it will move randomly", "If you are in the same room as it and take a passive action it will copy you and you will lose. If you are in the same room but choose to move into a different room you won't be punished."], # What the entity does
+    5: ["0 is a empty room, 1 is the keyroom, 2 is the exitroom, 3 is a room with a scroll of banishment, 4 is a snakeroom, X is an inaccesible room", "no"], # how
+    6: ["move: You can move through an adjacent corridor to another room", "map: You chcek and update your map with the findings you have gathered so far", "search: You search the room you are in to discover what type of room it is or you use the item you are holding."], # actions
+}
 
 randmove = ["left", "right", "down", "up"]
-global Board
 Board = {
     0: ["0", '-', "?", "-", "?", "-", "?"],
     1: ["|", " ", "|", " ", "|", " ", "|"],
@@ -53,7 +50,6 @@ Board = {
     5: ["|", " ", "|", " ", "|", " ", "|"],
     6: ["?", "-", "?", "-", "?", "-", "?"],
 }
-
 Map = {
     0: ["0", '-', "?", "-", "?", "-", "?"],
     1: ["|", " ", "|", " ", "|", " ", "|"],
@@ -63,97 +59,83 @@ Map = {
     5: ["|", " ", "|", " ", "|", " ", "|"],
     6: ["?", "-", "?", "-", "?", "-", "?"],
 }
-
-
-
-rules = {
-    -1: [],
-    0: ["Welcome to the ()! Your goal is to escape by finding a key and bringing it to the exitroom. You must be careful of the entity. It copies your movement in the opposite direction.", "no"],
-    1: ["Your goal is to escape this maze by finding a key and bringing it into the exit room.", "no"], # How to play game / 
-    2: ["snakeroom", "scrollroom", "keyroom", "exitroom", "emptyroom"], # What each room does
-    3: ["key", ""], # What each item does
-    4: [""], # What each enemy does
-    5: ["0 is a empty room, 1 is the keyroom, 2 is the exitroom, 3 is a room with a scroll of banishment, 4 is a snakeroom, X is an inaccesible room", "no"], # how
-    6: [""], # actions
-}
-
-global blocked
-global legal
+turn = 0
+placementcol = [0, 2, 4, 6]
+placementrow = [0, 2, 4, 6]
+move = "jim"
+removedcorridor = [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6]
+random.shuffle(removedcorridor)
+win = 0
+admin = 0
 legal = 1
-global playerposcol 
-global playerposrow 
 playerposcol = 0
 playerposrow = 0
-global player2poscol 
-global player2posrow 
+newquiz = True
 player2poscol = 6
 player2posrow = 6
 random.shuffle(placementcol)
 random.shuffle(placementrow)
-
-
-#excludedroom = random.randrange(0, 16)
-#snakeroom = random.randrange(0, 16)
-#snakeroom1 = random.randrange(0, 16)
-#exitroom = random.randrange(0, 16)
-#scrollroom = random.randrange(0, 16)
-#scrollroom1 = random.randrange(0, 16)
-#keyroom = random.randrange(0, 16)
-
-#while exitroom == keyroom:
-#    keyroom = random.randrange(0, 16)
-#while exitroom == excludedroom or excludedroom == keyroom:
-#    excludedroom = random.randrange(0, 16)
-
-#rooms = [
-#    snakeroom, snakeroom1, scrollroom, scrollroom1, excludedroom, keyroom, exitroom, 0, 0, 0, 0, 0, 0, 0, 0, 0 
-#]
+rooms = [
+    "X", 2, 1, 1, 3, 2, 4, 0, 5, 0, 0, 0, 0, 0, 0, 0 
+]
+random.shuffle(rooms)
+if rooms[0] == "X" or rooms[15] == "X":
+    random.shuffle(rooms)
+for i in range(0,6):
+    random.shuffle(corridors[removedcorridor[i]])
 
 class room():
     def __init__(self, id, poscol, posrow, new, type): #pos = position, new = bool; has the room has been entered before, 
         self.id = id
-        self.new = new
+        self.new = True
         self.poscol = poscol
         self.posrow = posrow
         self.searched = False
-        match id:
-            case 0:                                     ##################   FIX ROWS OF SPECIAL AND BASIC ROOMS (Partially done (Not truely random))
-                self.type = "X" #Excludedroom
-            case 2|1:
-                self.type = 3 #Scrollroom
-            case 4|3:
-                self.type = 4 #Snakeroom
+        match rooms[id]:
+            case "X":                                     ##################   FIX ROWS OF SPECIAL AND BASIC ROOMS (Partially done (Not truely random))
+                self.type = "X" #Excludedroom 1
+            case 1:
+                self.type = 3 #Scrollroom 2
+            case 2:
+                self.type = 4 #Snakeroom 2
+            case 3:
+                self.type = 1 #Keyroom 1
+            case 4:
+                self.type = 2 #Exitroom 1
             case 5:
-                self.type = 1 #Keyroom
-            case 6:
-                self.type = 2 #Exitroom
-            case 7:
-                self.type = 5 #quiz
-            case 8|9|10|11|12|13|14|15:
+                self.type = 5 #quiz 1
+            case 0:
                 self.type = 0
-
 
     def newcheck(self, poscol, posrow):
         if self.poscol == poscol and self.posrow == posrow:
-            if self.id == 0:
-                print("no")
+            if self.new == True:
+                print("You have moved to a new room")
+                self.new = False
             else:
-                if self.new == True:
-                    print("You have moved to a new room")
-                    self.new = False
-                else:
-                    print("You have arrived in a familiar room")
-
+                print("You have arrived in a familiar room")
+                if self.searched == True:
+                    match self.type:
+                        case 1: 
+                            print("You notice the skeleton in the corner of the room") # key room
+                        case 2:
+                            print("You notice the locked trapdoor in the ceiling") # exit room
+                        case 3: 
+                            print("You notice a pedastal in the center of the room") # Scroll room
+                        case 4: 
+                            print("You hear the faint rustling of a snake") # Snake room
+                        case 5: 
+                            print("You notice the statue in the center") # Quiz room
 
     def searchcheck(self, poscol, posrow):
         if self.poscol == poscol and self.posrow == posrow:
             self.searched = True
-            match id:
-                case 0|1:
+            match self.type:
+                case 4:
                     scare = random.choice(randmove)
                     print("You stumble across a snake and escape to an adjacent room")
-                    P1.move(scare)
-                case 2|3:
+                    P1.move(playerposcol, playerposrow, scare)
+                case 3:
                     print("This room has a scroll resting on a pedestal")
                     pickup = input("Would you like to replace your current item with this item?")
                     match pickup:
@@ -161,7 +143,7 @@ class room():
                                 P1.itempickup("scroll")
                             case "N"|"n"|"no"|"No"|"NO":
                                 print("You leave the scroll on its pedastal")
-                case 5:
+                case 1:
                     print("This room has a key!")
                     pickup = input("Would you like to replace your current item with this item?")
                     match pickup:
@@ -169,9 +151,14 @@ class room():
                                 P1.itempickup("key")
                             case "N"|"n"|"no"|"No"|"NO":
                                 print("You leave the key in the room")
-                case 6:
-                    print["This room has a locked door in the corner."]
-                case 7|8|9|10|11|12|13|14|15:
+                case 2:
+                    print["This room has a locked trapdoor in the ceiling."]
+                case 5:
+                    print("This room has a statue in the center")
+                    quiz = input("Do you approach the statue? (Type no if you dont want to)")
+                    if quiz != "no": 
+                        rooom[7].quiz
+                case _:
                     print("This room is empty. How unremarkable.")
 
     def useitem(self, poscol, posrow, item):
@@ -189,16 +176,25 @@ class room():
                     if item == "Key":
                         print("This room has a locked door in the corner")
                         escape = input("Would you like to use the key and escape?")
+                        if "y" in escape: 
+                            P1.win
                         match escape:
                             case "Y"|"y"|"yes"|"Yes"|"YES":
                                 P1.win
                     else: 
                         print("Your item has no use here")
-                case 7|8|9|10|11|12|13|14|15:
-                    print("This room is empty. How unremarkable.")
+                case _:
+                    print("This room is empty. Would you like to leave your item here?")
+                    placeitem = input("Would you like to use the key and escape?")
+                    if "y" in placeitem: 
+                        self.item = item
 
     def mapupdate(self, poscol, posrow):
-        if admin ==0: 
+        if self.searched == True:
+            Board[self.posrow][self.poscol] = self.type
+        elif self.new == False:
+            Board[self.posrow][self.poscol] = "0"
+        else:
             match poscol: 
                 case 0|2|4|6:
                     match posrow: 
@@ -222,20 +218,93 @@ class room():
         for i in range(0,6):
             Map[removedcorridor[i]][corridors[removedcorridor[i]][0]] = " "
 
-
-
-
+    def quiz(self):
+        quizwin = False
+        if newquiz == True:
+            match self.id:
+                case 0|1|2|3:
+                    Q1 = input("How may people are in the Yr11 CPT class?")
+                    Q2 = input("What is 7^4?")
+                    Q3 = input("what is sin(30)?")
+                    if Q1 == "9" and Q2 == "2401" and Q3 == "0.5":
+                        quizwin = True
+                        newquiz = False
+                    else:
+                        print("The light in the statue's eyes dims")
+                        print("You must have failed its test")
+                        newquiz = False
+                case 4|5|6|7:
+                    Q1 = input("What is the best theme in Visual Studio Code?")
+                    Q2 = input("The sequel to 'Hollow Knight' is 'Hollow Knight:...'")
+                    Q3 = input("What game does the creator have over 3000 hours in")
+                    if Q1 == "Matrix CRT" and Q2 == "Silksong" and Q3 == "Terraria":
+                        quizwin = True
+                        newquiz = False
+                    else:
+                        print("The light in the statue's eyes dims")
+                        print("You must have failed its test")
+                        newquiz = False
+                case 8|9|10|11:
+                    Q1 = input("How many trees are in the lower Kilgour quad?")
+                    Q2 = input("How long is a normal CPT period in seconds?")
+                    Q3 = input("How many seconds are in the 'Never Gonna Give You Up' music video by Rick Astley?")
+                    if Q1 == "2" and Q2 == "3300" and (Q3 == "213" or Q3 == "214"):
+                        quizwin = True
+                        newquiz = False
+                    else:
+                        print("The light in the statue's eyes dims")
+                        print("You must have failed its test")
+                        newquiz = False
+                case 12|13|14|15:
+                    Q1 = input("What is the name of the studio that created 'Hollow Knight'")
+                    Q2 = input("")
+                    Q3 = input("What is the creature that haunts this cavern names by the surface dwellers?")
+                    if Q1 == "Team Cherry" and Q2 == "" and Q3 == "The entity":
+                        quizwin = True
+                        newquiz = False
+                    else:
+                        print("The light in the statue's eyes dims")
+                        print("You must have failed its test")
+                        newquiz = False
+            if quizwin == True:
+                print("The statue's eyes shine brighter for a moment.")
+                print("A trophy materialises in the statues hands.")
+                pickup = input("Would you like to replace your current item with this item?")
+                match pickup:
+                    case "Y"|"y"|"yes"|"Yes"|"YES":
+                        P1.itempickup("Trophy")
+                        print("The light in the statue's eyes dims")
+                        quizwin = False
+                    case "N"|"n"|"no"|"No"|"NO":
+                        print("You leave the trophy in the statue's arms")
+        else:
+            if quizwin == True: 
+                pickup = input("Would you like to replace your current item with this item?")
+                match pickup:
+                    case "Y"|"y"|"yes"|"Yes"|"YES":
+                        P1.itempickup("Trophy")
+                        quizwin = False
+                    case "N"|"n"|"no"|"No"|"NO":
+                        print("You leave the trophy in the statue's arms")
+        print("The statue remains motionless")
 class player:
     def __init__(self, poscol, posrow):
         self.poscol = poscol
         self.posrow = posrow
-        self.item = "Nothing"
+        self.item = 0
 
     def win():
+        global win
         print("ggbrouwinnicejobiguess")
+        win = 1
 
     def itempickup(self, item):
         self.item = item
+
+    def P2movecheck(self):
+        if self.item == "Trophy":
+            print("The entity is in column:", player2poscol)
+            print("The entity is in row:", player2posrow)
 
     def move(self, poscol, posrow, move):
         self.poscol = poscol
@@ -255,8 +324,14 @@ class player:
             if self == P1:
                 match move:
                     case "left":
-                        if placementcol[0] == poscol-2 and placementrow[0] == posrow:
-                            legal = 0
+                        for i in range(0,16):
+                            if rooms[i] == "X":
+                                if rooom[i].posrow == posrow and rooom[i].poscol == poscol-2:
+                                    for i in range(0,16):
+                                        rooom[i].mapupdate(poscol-1, posrow)
+                                    legal = 0
+                                    break
+                        if legal == 0:  
                             break
                         for i in range(0,6):
                             if removedcorridor[i] == posrow:
@@ -279,17 +354,24 @@ class player:
                             playerposrow = self.posrow
                             break
                     case "right":
-                        if placementcol[0] == poscol+2 and placementrow[0] == posrow:
-                            legal = 0
+                        for i in range(0,16):
+                            if rooms[i] == "X":
+                                if rooom[i].posrow == posrow and rooom[i].poscol == poscol+2:
+                                    for i in range(0,16):
+                                        rooom[i].mapupdate(poscol+1, posrow)
+                                    legal = 0
+                                    break
+                        if legal == 0:  
                             break
                         for i in range(0,6):
                             if removedcorridor[i] == posrow:
                                 if corridors[removedcorridor[i]][0] == self.poscol+1:
                                     blocked = "yes"
                         if blocked == "yes":
-                                legal = 0
+                            legal = 0
+                            for i in range(0,16):
                                 rooom[i].mapupdate(poscol+1, posrow)
-                                break
+                            break
                         else:
                             legal = 1
                         if self.poscol+2 > 7:
@@ -302,8 +384,14 @@ class player:
                             playerposrow = self.posrow
                             break
                     case "down":
-                        if placementcol[0] == poscol and placementrow[0] == posrow+2:
-                            legal = 0
+                        for i in range(0,16):
+                            if rooms[i] == "X":
+                                if rooom[i].posrow == posrow+2 and rooom[i].poscol == poscol:
+                                    for i in range(0,16):
+                                        rooom[i].mapupdate(poscol, posrow+1)
+                                    legal = 0
+                                    break
+                        if legal == 0:  
                             break
                         for i in range(0,6):
                             if removedcorridor[i] == self.posrow+1:
@@ -311,7 +399,8 @@ class player:
                                     blocked = "yes"
                         if blocked == "yes":
                             legal = 0
-                            rooom[i].mapupdate(poscol, posrow+1)
+                            for i in range(0,16):
+                                rooom[i].mapupdate(poscol, posrow+1)
                             break
                         else: 
                             legal = 1
@@ -325,8 +414,14 @@ class player:
                             playerposrow = self.posrow
                             break
                     case "up":
-                        if placementcol[0] == poscol and placementrow[0] == posrow-2:
-                            legal = 0
+                        for i in range(0,16):
+                            if rooms[i] == "X":
+                                if rooom[i].posrow == posrow-2 and rooom[i].poscol == poscol:
+                                    for i in range(0,16):
+                                        rooom[i].mapupdate(poscol, posrow-1)
+                                    legal = 0
+                                    break
+                        if legal == 0:  
                             break
                         for i in range(0,6):
                             if removedcorridor[i] == self.posrow-1:
@@ -334,7 +429,8 @@ class player:
                                     blocked = "yes"
                         if blocked == "yes":
                             legal = 0
-                            rooom[i].mapupdate(poscol, posrow-1)
+                            for i in range(0,16):
+                                rooom[i].mapupdate(poscol, posrow-1)
                             break
                         else: 
                             legal = 1
@@ -392,8 +488,13 @@ class player:
                             else:
                                 if self.posrow - 2 < 0:
                                     move = random.choice(randmove)
-                                elif placementcol[0] == poscol and placementrow[0] == posrow-2:
-                                    move = random.choice(randmove)
+                                elif True:
+                                    for i in range(0,16):
+                                        for i in range(0,16):
+                                            if rooms[i] == "X":
+                                                if rooom[i].posrow == posrow-2 and rooom[i].poscol == poscol:
+                                                    move = random.choice(randmove)
+                                                    break
                                 else: 
                                     self.posrow -=2
                                     break
@@ -421,9 +522,6 @@ class player:
                 player2posrow = self.posrow
                 break
 
-
-
-
     def search(self, poscol, posrow):
         if self.item == 0:
             for i in range(0,16):
@@ -432,9 +530,8 @@ class player:
             for i in range(0,16):
                 rooom[i].useitem(poscol, posrow, self.item)
 
-
-
     def map(self, poscol, posrow):
+        global admin
         if admin == 0:
             for i in range(0,16):
                 rooom[i].mapupdate(poscol, posrow)
@@ -455,78 +552,176 @@ class player:
         else:
             if self.poscol == poscol and self.posrow == posrow:
                 print("You have died")
-
-
 rooom = [
-    "a", "b", "c", "d", "e", "f","g","h","i","j","k","l","m","n","o","p"
+    "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"
 ]
-#rom = room("rom", 0, placement[0], True)
+
 z = 0
 for x in range (0, 4):
     for i in range(0, 4):
         rooom[z] = room(z, placementcol[i], placementrow[i-x], True, "no") 
         z += 1
 
-for i in range(0,16):
-    rooom[i].Boardupdate()
-
 
 
 P1 = player(0, 0)
 P2 = player(6, 6)
-P1.itempickup("Nothing")
+P1.itempickup(0)
 turn = 0
 
-while turn < 50:
-    blocked = "no"
-    action = input("What would you like to do: ")
-    match action:
-        case "move":
-            mve = 1
-            while mve == 1:
-                move = input("Would you like to move up, down, right or left. If you would like to cancel, please type cancel: ")
-                if move == "left" or move == "right" or move == "up" or move == "down":
-                    #for i in range(0,16):
-                    #    rooom[i].movecheck(playerposcol, playerposrow, move)
-                    P1.move(playerposcol, playerposrow, move)
-                    mve = 0
-                    if legal == 1:
-                        turn+=1
-                        P2.move(player2poscol, player2posrow, move)
-                        for i in range(0,16):
-                            rooom[i].newcheck(playerposcol, playerposrow)
-                    else:
-                        mve = 1
-                elif move == "cancel": 
-                    mve = 0
-                if mve == 1:
-                    print("That is not a direction you may move in. Please choose another direction.")
-                move = "0"
-                input("When you are ready to continue press enter.")
-        case "search"|"use":
-            P2.deathcheck(playerposcol, playerposrow)
-            P1.search(playerposcol, playerposrow)
-            turn+=1
-            P2.move(player2poscol, player2poscol, random.choice(randmove))
-            input("When you are ready to continue press enter.")
-        case "map":
-            P2.deathcheck(playerposcol, playerposrow)
-            P1.map(playerposcol, playerposrow)
-            P2.move(player2poscol, player2posrow, random.choice(randmove))
-            turn+=1
-            input("When you are ready to continue press enter.")
-        case "rules":
-            rule = 1
-            print("What rules are you confused about?")
-            print("Please enter the number that corresponds to your query: 1; What is the goal of the game. 2; How to read the map. 3; What actions you can take. 4; What each enemy and item does. ")
-            rule = int(input("Enter number here: "))
-            while rule != "0":
-                print(rules[rule][0])
-                print("If you are confused about any other rules please enter the number. If you are done enter '0'.")
-                rule = input("Input number here: ")
-        case "admin":
-            print("Welcome Admin.")
-            admin = 1
+
+for i in range(0,3):
+    print(rules[0][i])
+input("When you are ready to enter the (); Press Enter.")
+
+
+def gamestart():
     clear()
-#    print(player2poscol)
-#    print(player2posrow)
+    global blocked
+    global legal
+    global playerposcol 
+    global playerposrow 
+    global player2poscol 
+    global player2posrow 
+    global removedcorridor
+    global corridors
+    global move
+    global turn
+    global win
+    global admin
+    global Board
+    global Map
+    randmove = ["left", "right", "down", "up"]
+    Board = {
+        0: ["0", '-', "?", "-", "?", "-", "?"],
+        1: ["|", " ", "|", " ", "|", " ", "|"],
+        2: ["?", "-", "?", "-", "?", "-", "?"],
+        3: ["|", " ", "|", " ", "|", " ", "|"],
+        4: ["?", "-", "?", "-", "?", "-", "?"],
+        5: ["|", " ", "|", " ", "|", " ", "|"],
+        6: ["?", "-", "?", "-", "?", "-", "?"],
+    }
+    Map = {
+        0: ["0", '-', "?", "-", "?", "-", "?"],
+        1: ["|", " ", "|", " ", "|", " ", "|"],
+        2: ["?", "-", "?", "-", "?", "-", "?"],
+        3: ["|", " ", "|", " ", "|", " ", "|"],
+        4: ["?", "-", "?", "-", "?", "-", "?"],
+        5: ["|", " ", "|", " ", "|", " ", "|"],
+        6: ["?", "-", "?", "-", "?", "-", "?"],
+    }
+    for i in range(0,16):
+        rooom[i].Boardupdate()
+    turn = 0
+    placementcol = [0, 2, 4, 6]
+    placementrow = [0, 2, 4, 6]
+    move = "jim"
+    removedcorridor = [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6]
+    random.shuffle(removedcorridor)
+    win = 0
+    admin = 0
+    legal = 1
+    playerposcol = 0
+    playerposrow = 0
+    newquiz = True
+    player2poscol = 6
+    player2posrow = 6
+    random.shuffle(placementcol)
+    random.shuffle(placementrow)
+    rooms = [
+        "X", 2, 1, 1, 3, 2, 4, 0, 5, 0, 0, 0, 0, 0, 0, 0 
+    ]
+    random.shuffle(rooms)
+    if rooms[0] == "X" or rooms[15] == "X":
+        random.shuffle(rooms)
+    for i in range(0,6):
+        random.shuffle(corridors[removedcorridor[i]])
+    while turn < 50:
+        if win == 1: 
+            break
+        else:
+            blocked = "no"
+            action = input("What would you like to do: ")
+            match action:
+                case "move":
+                    mve = 1
+                    while mve == 1:
+                        move = input("Would you like to move up, down, right or left. If you would like to cancel, please type cancel: ")
+                        if move == "left" or move == "right" or move == "up" or move == "down":
+                            #for i in range(0,16):
+                            #    rooom[i].movecheck(playerposcol, playerposrow, move)
+                            P1.move(playerposcol, playerposrow, move)
+                            mve = 0
+                            if legal == 1:
+                                turn+=1
+                                P2.move(player2poscol, player2posrow, move)
+                                for i in range(0,16):
+                                    rooom[i].newcheck(playerposcol, playerposrow)
+                            else:
+                                mve = 1
+                        elif move == "cancel": 
+                            mve = 0
+                        if mve == 1:
+                            print("That is not a direction you may move in. Please choose another direction.")
+                        move = "0"
+                        input("When you are ready to continue press enter.")
+                case "search"|"use":
+                    P2.deathcheck(playerposcol, playerposrow)
+                    P1.search(playerposcol, playerposrow)
+                    turn+=1
+                    P2.move(player2poscol, player2poscol, random.choice(randmove))
+                    P1.P2movecheck()
+                    input("When you are ready to continue press enter.")
+                case "map":
+                    P2.deathcheck(playerposcol, playerposrow)
+                    P1.map(playerposcol, playerposrow)
+                    P2.move(player2poscol, player2posrow, random.choice(randmove))
+                    turn+=1
+                    P1.P2movecheck()
+                    input("When you are ready to continue press enter.")
+                case "rules"|"help":
+                    rule = 1
+                    print("If you are unable to ")
+                    print("What rules are you confused about?")
+                    print("Please enter the number that corresponds to your query: 1; What is the goal of the game. 2; How to read the map. 3; What actions you can take. 4; What each enemy and item does. ")
+                    rule = int(input("Enter number here: "))
+                    while rule != "0":
+                        print(rules[rule][0])
+                        print("If you are confused about any other rules please enter the number. If you are done enter '0'.")
+                        rule = input("Input number here: ")
+                case "admin":
+                    print("Welcome Admin.")
+                    #rooom[i].Boardupdate()
+                    admin = 1
+                case "trophy":
+                    P1.itempickup("Trophy")
+                case "restart":
+                    break
+            clear()
+
+gamestart()
+
+if win == 1:
+    print("Great job!")
+    print("You have managed to prevent the entity from escaping!")
+    print("Unluckily the entity you trapped isnt the only one")
+    print("There are many more hiding away in their own caves")
+    print("But you can stop them by going and stopping the others aswell")
+else:
+    print("You have fail to prevent the entity from escaping either due to foolishness or just bad luck.")
+    print("It is loose upon the world")
+    print("Luckily for you by itself it can only cause minimal to moderate amont of destruction")
+    print("But there are others just like it hiding in their own caves")
+
+playagain = input("Would you like to attempt to stop a different entity?")
+if "y" in playagain:
+    gamestart()
+elif "n" in playagain:
+    print("I see.")
+    print("You would rather let the world burn then risk your own life.")
+    playagain = input("Are you sure this is what you really want?")
+    if "y" in playagain:
+        gamestart()
+    elif "n" in playagain:
+        print("I respect your decision.")
+        print("Goodbye")

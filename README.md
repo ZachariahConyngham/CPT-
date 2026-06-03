@@ -60,13 +60,16 @@ scare enemy - starts in 2 rooms, forces player to run in a random direction when
 
 ## 20-5-2026
 - Coded the corridors
-- 
 
 ## 22-5-2026
 - worked on fixing the bug where is couldn't move from room to room
-- 
 
-# 27-5-2026
+## 27-5-2026
 - Worked on fixing the bugs with the anti-players movement
-- 
 
+## 1-6-2026
+- Worked on the quiz
+
+## 3-6-2026
+- 
+- 

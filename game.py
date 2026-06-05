@@ -31,14 +31,39 @@ corridors = { #[row][column]
 }
 rules = {
     -1: [],
-    0: ["Welcome to the ()! Your goal is to prevent the entity from escaping.", "The entity copies your movement in the opposite direction, so be careful.", "The only ways to successfully stop the entity are to either escape and lock the entity inside the cavern forever or banish the entity with a scroll of banishment"],
-    1: ["Your goal is to escape this maze by finding a key and bringing it into the exit room.", "To do this you must search every room you find until you locate the keyroom and the exit room."], # How to play game / 
-    2: ["A snake room is aroom where a snake hides in. If you search this room then you will be chased into a random adjacent room.", "A scroll room contains a scroll of banishment which will let you banish an enemy.", "A keyroom has a key in it that unlocks the exit", "If you bring a key to this room you win", "This room has nothig of importance for you"], # What each room does
-    3: ["The key allows you to escape the dungeon when brought to the exit room", "The scroll of banishment allows you to banish an enemy from this world. If that enemy if a snake it will make the room a empty room. If you manage to banish the entity you win"], # What each item does
-    4: ["Inside the () resides the entity", "The entity is trying to become a perfect replica of you so it can escape into the world", "After you make 60 actions it will have perfectly copied you and will escape leaving you trapped forever", "If it manages to catch up to you before then it will be able to copy you instantly and will then escape.", "It moves in the opposite direction of your movements when it can but if it can't it will move randomly.", "If you take a passive action like checking your map or searching the room you are in it will move randomly", "If you are in the same room as it and take a passive action it will copy you and you will lose. If you are in the same room but choose to move into a different room you won't be punished."], # What the entity does
-    5: ["0 is a empty room, 1 is the keyroom, 2 is the exitroom, 3 is a room with a scroll of banishment, 4 is a snakeroom, X is an inaccesible room", "no"], # how
-    6: ["move: You can move through an adjacent corridor to another room", "map: You chcek and update your map with the findings you have gathered so far", "search: You search the room you are in to discover what type of room it is or you use the item you are holding."], # actions
+    0: ["Welcome to the ()! Your goal is to prevent the entity from escaping.", "The entity copies your movement in the opposite direction, so be careful.", "The only ways to successfully stop the entity are to either escape and lock the entity inside the cavern forever or banish the entity with a scroll of banishment", "If you have any other queries; Type 'rules' as your action."],# 3 parts
+    1: ["Your goal is to escape this maze by finding a key and bringing it into the exit room.", "To do this you must search every room you find until you locate the keyroom and the exit room."], # How to play game / 2 parts
+    2: ["A snake room is aroom where a snake hides in. If you search this room then you will be chased into a random adjacent room.", "A scroll room contains a scroll of banishment which will let you banish an enemy.", "A keyroom has a key in it that unlocks the exit", "If you bring a key to this room you win", "This room has nothing of importance for you", "| and - and corridors you can travel through to get from room to room"], # What each room does / 5 parts
+    3: ["The key allows you to escape the dungeon when brought to the exit room", "The scroll of banishment allows you to banish an enemy from this world. If that enemy if a snake it will make the room a empty room. If you manage to banish the entity you win"], # What each item does / 2 parts
+    4: ["Inside the () resides the entity", "The entity is trying to become a perfect replica of you so it can escape into the world", "After you make 60 actions it will have perfectly copied you and will escape leaving you trapped forever", "If it manages to catch up to you before then it will be able to copy you instantly and will then escape.", "It moves in the opposite direction of your movements when it can but if it can't it will move randomly.", "If you take a passive action like checking your map or searching the room you are in it will move randomly", "If you are in the same room as it and take a passive action it will copy you and you will lose.", "If you are in the same room but choose to move into a different room you won't be punished."], # What the entity does / 7 parts
+    5: ["0 is a empty room, 1 is the keyroom, 2 is the exitroom, 3 is a room with a scroll of banishment, 4 is a snakeroom, X is an inaccesible room", "no"], # rooms / 1 part
+    6: ["move: You can move through an adjacent corridor to another room", "map: You chcek and update your map with the findings you have gathered so far", "search: You search the room you are in to discover what type of room it is or you use the item you are holding.", "restart: If the game is impossible to win for whatever reason this will reset the map"], # actions / 4 parts
 }
+
+def ruless(rule):
+    match rule:
+        case 0:
+            for i in range(0,3):
+                print(rules[rule][i])
+        case 1:
+            for i in range(0,2):
+                print(rules[rule][i])
+        case 2:
+            for i in range(0,6):
+                print(rules[rule][i])
+        case 3:
+            for i in range(0,2):
+                print(rules[rule][i])
+        case 4:
+            for i in range(0,8):
+                print(rules[rule][i])
+        case 5:
+            print(rules[rule][i])
+        case 6:
+            for i in range(0,4):
+                print(rules[rule][i])
+        case "restart": 
+            print("You need to type restart as an action.")
 
 randmove = ["left", "right", "down", "up"]
 Board = {
@@ -569,10 +594,10 @@ P2 = player(6, 6)
 P1.itempickup(0)
 turn = 0
 
-
-for i in range(0,3):
-    print(rules[0][i])
-input("When you are ready to enter the (); Press Enter.")
+def rulles():
+    for i in range(0,4):
+        print(rules[0][i])
+    input("When you are ready to enter the (); Press Enter.")
 
 
 def gamestart():
@@ -636,7 +661,7 @@ def gamestart():
         random.shuffle(rooms)
     for i in range(0,6):
         random.shuffle(corridors[removedcorridor[i]])
-    while turn < 50:
+    while turn < 70:
         if win == 1: 
             break
         else:
@@ -681,12 +706,13 @@ def gamestart():
                     input("When you are ready to continue press enter.")
                 case "rules"|"help":
                     rule = 1
-                    print("If you are unable to ")
                     print("What rules are you confused about?")
-                    print("Please enter the number that corresponds to your query: 1; What is the goal of the game. 2; How to read the map. 3; What actions you can take. 4; What each enemy and item does. ")
+                    print("Please enter the number that corresponds to your query: 1; What is the goal of the game. 2; What each type of room does. ")
+                    print("3; What each item does. 4; What the entity is capable of. 5; How to read the map. ", "6; What each action does. ")
+                    print("If you are softlocked and cannot beat the game type 'restart' as an action")
                     rule = int(input("Enter number here: "))
                     while rule != "0":
-                        print(rules[rule][0])
+                        ruless(rule)
                         print("If you are confused about any other rules please enter the number. If you are done enter '0'.")
                         rule = input("Input number here: ")
                 case "admin":
@@ -699,6 +725,7 @@ def gamestart():
                     break
             clear()
 
+rulles()
 gamestart()
 
 if win == 1:

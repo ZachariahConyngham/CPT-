@@ -71,5 +71,9 @@ scare enemy - starts in 2 rooms, forces player to run in a random direction when
 - Worked on the quiz
 
 ## 3-6-2026
+- Created replayablilty and lore
 - 
-- 
+
+## 5-6-2026
+- Worked on testing and evaluation documentation
+- White box testing

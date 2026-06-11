@@ -58,7 +58,7 @@ def ruless(rule):
             for i in range(0,8):
                 print(rules[rule][i])
         case 5:
-            print(rules[rule][i])
+            print(rules[rule][0])
         case 6:
             for i in range(0,4):
                 print(rules[rule][i])
@@ -163,18 +163,18 @@ class room():
                 case 3:
                     print("This room has a scroll resting on a pedestal")
                     pickup = input("Would you like to replace your current item with this item?")
-                    match pickup:
-                            case "Y"|"y"|"yes"|"Yes"|"YES":
+                    match pickup.lower():
+                            case "y"|"yes":
                                 P1.itempickup("scroll")
-                            case "N"|"n"|"no"|"No"|"NO":
+                            case "n"|"no":
                                 print("You leave the scroll on its pedastal")
                 case 1:
                     print("This room has a key!")
                     pickup = input("Would you like to replace your current item with this item?")
-                    match pickup:
-                            case "Y"|"y"|"yes"|"Yes"|"YES":
+                    match pickup.lower():
+                            case "y"|"yes":
                                 P1.itempickup("key")
-                            case "N"|"n"|"no"|"No"|"NO":
+                            case "n"|"no":
                                 print("You leave the key in the room")
                 case 2:
                     print["This room has a locked trapdoor in the ceiling."]
@@ -203,8 +203,8 @@ class room():
                         escape = input("Would you like to use the key and escape?")
                         if "y" in escape: 
                             P1.win
-                        match escape:
-                            case "Y"|"y"|"yes"|"Yes"|"YES":
+                        match escape.lower():
+                            case "y"|"yes":
                                 P1.win
                     else: 
                         print("Your item has no use here")
@@ -295,21 +295,21 @@ class room():
                 print("The statue's eyes shine brighter for a moment.")
                 print("A trophy materialises in the statues hands.")
                 pickup = input("Would you like to replace your current item with this item?")
-                match pickup:
-                    case "Y"|"y"|"yes"|"Yes"|"YES":
+                match pickup.lower():
+                    case "y"|"yes":
                         P1.itempickup("Trophy")
                         print("The light in the statue's eyes dims")
                         quizwin = False
-                    case "N"|"n"|"no"|"No"|"NO":
+                    case "n"|"no":
                         print("You leave the trophy in the statue's arms")
         else:
             if quizwin == True: 
                 pickup = input("Would you like to replace your current item with this item?")
-                match pickup:
-                    case "Y"|"y"|"yes"|"Yes"|"YES":
+                match pickup.lower():
+                    case "y"|"yes":
                         P1.itempickup("Trophy")
                         quizwin = False
-                    case "N"|"n"|"no"|"No"|"NO":
+                    case "n"|"no":
                         print("You leave the trophy in the statue's arms")
         print("The statue remains motionless")
 class player:
@@ -318,10 +318,13 @@ class player:
         self.posrow = posrow
         self.item = 0
 
-    def win():
+    def win(self):
         global win
         print("ggbrouwinnicejobiguess")
-        win = 1
+        if self == P1:
+            win = 1
+        elif self == P2:
+            win = 2
 
     def itempickup(self, item):
         self.item = item
@@ -334,7 +337,6 @@ class player:
     def move(self, poscol, posrow, move):
         self.poscol = poscol
         self.posrow = posrow
-        
         global blocked
         global playerposcol
         global playerposrow
@@ -347,7 +349,7 @@ class player:
         while legal == 1:
             blocked = "no"
             if self == P1:
-                match move:
+                match move.lower():
                     case "left":
                         for i in range(0,16):
                             if rooms[i] == "X":
@@ -472,7 +474,7 @@ class player:
                 x = 0
                 while move != "no":
                     blocked = "no"
-                    match move:
+                    match move.lower():
                         case "left":
                             for i in range(0,6):
                                 if removedcorridor[i] == self.posrow:
@@ -577,6 +579,7 @@ class player:
         else:
             if self.poscol == poscol and self.posrow == posrow:
                 print("You have died")
+                P2.win()
 rooom = [
     "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"
 ]
@@ -661,13 +664,15 @@ def gamestart():
         random.shuffle(rooms)
     for i in range(0,6):
         random.shuffle(corridors[removedcorridor[i]])
-    while turn < 70:
+    while turn < 70 and win !=1:
         if win == 1: 
+            break
+        elif win == 2:
             break
         else:
             blocked = "no"
             action = input("What would you like to do: ")
-            match action:
+            match action.lower():
                 case "move":
                     mve = 1
                     while mve == 1:
@@ -689,32 +694,47 @@ def gamestart():
                         if mve == 1:
                             print("That is not a direction you may move in. Please choose another direction.")
                         move = "0"
-                        input("When you are ready to continue press enter.")
                 case "search"|"use":
                     P2.deathcheck(playerposcol, playerposrow)
+                    if win == 2:
+                        break
                     P1.search(playerposcol, playerposrow)
                     turn+=1
                     P2.move(player2poscol, player2poscol, random.choice(randmove))
                     P1.P2movecheck()
-                    input("When you are ready to continue press enter.")
                 case "map":
                     P2.deathcheck(playerposcol, playerposrow)
+                    if win == 2:
+                        break
                     P1.map(playerposcol, playerposrow)
                     P2.move(player2poscol, player2posrow, random.choice(randmove))
                     turn+=1
                     P1.P2movecheck()
-                    input("When you are ready to continue press enter.")
                 case "rules"|"help":
                     rule = 1
-                    print("What rules are you confused about?")
-                    print("Please enter the number that corresponds to your query: 1; What is the goal of the game. 2; What each type of room does. ")
-                    print("3; What each item does. 4; What the entity is capable of. 5; How to read the map. ", "6; What each action does. ")
-                    print("If you are softlocked and cannot beat the game type 'restart' as an action")
-                    rule = int(input("Enter number here: "))
-                    while rule != "0":
-                        ruless(rule)
-                        print("If you are confused about any other rules please enter the number. If you are done enter '0'.")
-                        rule = input("Input number here: ")
+                    while rule != 0 and rule != "":
+                        print("What rules are you confused about?")
+                        print("Please enter the NUMBER that corresponds to your query: 1; What is the goal of the game. 2; What each type of room does. ")
+                        print("3; What each item does. 4; What the entity is capable of. 5; How to read the map. ", "6; What each action does. ")
+                        print("If you are softlocked and cannot beat the game type 'restart' as an action")
+                        rule = input("Enter number here: ")
+                        while rule != "rule":
+                            if rule.isdigit() == True:
+                                rule = int(rule)
+                                if rule > 0 and rule < 7:
+                                    ruless(rule)
+                                    while isinstance(rule, int) and rule != 0:
+                                        print("If you are confused about any other rules please enter the word 'rule'. If you are done enter the number '0'.")
+                                        rule = input("Input here: ")
+                                        clear()
+                                elif rule == 0:
+                                    break
+                                else: 
+                                    print("That is not a valid number, please enter a integer between 1 and 6")
+                                    rule = input("Enter number here: ")
+                            else:
+                                print("That is not a integer, please enter a number: ")
+                                rule = input("Enter number here: ")
                 case "admin":
                     print("Welcome Admin.")
                     #rooom[i].Boardupdate()
@@ -723,6 +743,11 @@ def gamestart():
                     P1.itempickup("Trophy")
                 case "restart":
                     break
+                case _:
+                    print("That is not a valid action.")
+                    print("Here are some action you make take:")
+                    ruless(6)
+            input("When you are ready to continue press enter.")
             clear()
 
 rulles()

@@ -77,3 +77,10 @@ scare enemy - starts in 2 rooms, forces player to run in a random direction when
 ## 5-6-2026
 - Worked on testing and evaluation documentation
 - White box testing
+
+## 10-6-2026
+- Utilised Alpha testing
+- 
+
+## 11-6-2026
+- Worked on the documentation of testing and evaluation

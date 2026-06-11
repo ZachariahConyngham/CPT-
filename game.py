@@ -1,6 +1,5 @@
 import random
 import os
-
 def clear():  # Clears the terminal
     if os.name == "nt":
         _ = os.system("cls")
@@ -262,7 +261,7 @@ class room():
                     Q1 = input("What is the best theme in Visual Studio Code?")
                     Q2 = input("The sequel to 'Hollow Knight' is 'Hollow Knight:...'")
                     Q3 = input("What game does the creator have over 3000 hours in")
-                    if Q1 == "Matrix CRT" and Q2 == "Silksong" and Q3 == "Terraria":
+                    if Q1.lower() == "matrix crt" and Q2.lower() == "silksong" and Q3.lower() == "terraria":
                         quizwin = True
                         newquiz = False
                     else:
@@ -282,9 +281,9 @@ class room():
                         newquiz = False
                 case 12|13|14|15:
                     Q1 = input("What is the name of the studio that created 'Hollow Knight'")
-                    Q2 = input("")
-                    Q3 = input("What is the creature that haunts this cavern names by the surface dwellers?")
-                    if Q1 == "Team Cherry" and Q2 == "" and Q3 == "The entity":
+                    Q2 = input("What colour is the sky?")
+                    Q3 = input("What is the creature that haunts this cavern, called by the surface dwellers?")
+                    if Q1.lower() == "Team Cherry" and Q2.lower() == "blue" and Q3.lower() == "The entity":
                         quizwin = True
                         newquiz = False
                     else:
@@ -312,6 +311,7 @@ class room():
                     case "n"|"no":
                         print("You leave the trophy in the statue's arms")
         print("The statue remains motionless")
+
 class player:
     def __init__(self, poscol, posrow):
         self.poscol = poscol
@@ -749,10 +749,8 @@ def gamestart():
                     ruless(6)
             input("When you are ready to continue press enter.")
             clear()
-
 rulles()
 gamestart()
-
 if win == 1:
     print("Great job!")
     print("You have managed to prevent the entity from escaping!")

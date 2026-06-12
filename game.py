@@ -176,7 +176,7 @@ class room():
                             case "n"|"no":
                                 print("You leave the key in the room")
                 case 2:
-                    print["This room has a locked trapdoor in the ceiling."]
+                    print("This room has a locked trapdoor in the ceiling.")
                 case 5:
                     print("This room has a statue in the center")
                     quiz = input("Do you approach the statue? (Type no if you dont want to)")

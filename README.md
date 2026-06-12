@@ -84,3 +84,7 @@ scare enemy - starts in 2 rooms, forces player to run in a random direction when
 
 ## 11-6-2026
 - Worked on the documentation of testing and evaluation
+
+## 12-6-2026
+- Worked on the documentation of testing and evaluation
+- Brandon beta testing; syntax error on line 181

@@ -90,8 +90,8 @@ move = "jim"
 removedcorridor = [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6]
 random.shuffle(removedcorridor)
 win = 0
-admin = 0
-legal = 1
+admin = False
+legal = True
 playerposcol = 0
 playerposrow = 0
 newquiz = True
@@ -187,7 +187,7 @@ class room():
 
     def useitem(self, poscol, posrow, item):
         if self.poscol == poscol and self.posrow == posrow:
-            match id:
+            match self.id:
                 case 4|3:
                     if item == "scroll":
                         print("You banish the snake leaving the room empty.")
@@ -198,18 +198,12 @@ class room():
                     print("Your item has no use here")
                 case 6:
                     if item == "Key":
-                        print("This room has a locked door in the corner")
-                        escape = input("Would you like to use the key and escape?")
-                        if "y" in escape: 
-                            P1.win
-                        match escape.lower():
-                            case "y"|"yes":
-                                P1.win
+                        P1.win
                     else: 
                         print("Your item has no use here")
                 case _:
-                    print("This room is empty. Would you like to leave your item here?")
-                    placeitem = input("Would you like to use the key and escape?")
+                    print("This room is empty.")
+                    placeitem = input("Would you like to leave your item here?")
                     if "y" in placeitem: 
                         self.item = item
 
@@ -345,124 +339,124 @@ class player:
         global legal
         global removedcorridor
         global corridors
-        legal = 1
-        while legal == 1:
-            blocked = "no"
+        legal = True
+        while legal == True:
+            blocked = False
             if self == P1:
                 match move.lower():
-                    case "left":
+                    case "left"|"l":
                         for i in range(0,16):
                             if rooms[i] == "X":
                                 if rooom[i].posrow == posrow and rooom[i].poscol == poscol-2:
                                     for i in range(0,16):
                                         rooom[i].mapupdate(poscol-1, posrow)
-                                    legal = 0
+                                    legal = False
                                     break
-                        if legal == 0:  
+                        if legal == False:  
                             break
                         for i in range(0,6):
                             if removedcorridor[i] == posrow:
                                 if corridors[removedcorridor[i]][0] == self.poscol-1:
-                                    blocked = "yes"
-                        if blocked == "yes":
-                            legal = 0
+                                    blocked = True
+                        if blocked == True:
+                            legal = False
                             for i in range(0,16):
                                 rooom[i].mapupdate(poscol-1, posrow)
                             break
                         else: 
-                            legal = 1
+                            legal = True
                         if self.poscol-2 < 0:
-                            legal = 0
+                            legal = False
                             break
                         else:
                             self.poscol -=2
-                            legal = 1
+                            legal = True
                             playerposcol = self.poscol
                             playerposrow = self.posrow
                             break
-                    case "right":
+                    case "right"|"r":
                         for i in range(0,16):
                             if rooms[i] == "X":
                                 if rooom[i].posrow == posrow and rooom[i].poscol == poscol+2:
                                     for i in range(0,16):
                                         rooom[i].mapupdate(poscol+1, posrow)
-                                    legal = 0
+                                    legal = False
                                     break
-                        if legal == 0:  
+                        if legal == False:  
                             break
                         for i in range(0,6):
                             if removedcorridor[i] == posrow:
                                 if corridors[removedcorridor[i]][0] == self.poscol+1:
-                                    blocked = "yes"
-                        if blocked == "yes":
-                            legal = 0
+                                    blocked = True
+                        if blocked == True:
+                            legal = False
                             for i in range(0,16):
                                 rooom[i].mapupdate(poscol+1, posrow)
                             break
                         else:
-                            legal = 1
+                            legal = True
                         if self.poscol+2 > 7:
-                            legal = 0
+                            legal = False
                             break
                         else:
                             self.poscol +=2
-                            legal = 1
+                            legal = True
                             playerposcol = self.poscol
                             playerposrow = self.posrow
                             break
-                    case "down":
+                    case "down"|"d":
                         for i in range(0,16):
                             if rooms[i] == "X":
                                 if rooom[i].posrow == posrow+2 and rooom[i].poscol == poscol:
                                     for i in range(0,16):
                                         rooom[i].mapupdate(poscol, posrow+1)
-                                    legal = 0
+                                    legal = False
                                     break
-                        if legal == 0:  
+                        if legal == False:  
                             break
                         for i in range(0,6):
                             if removedcorridor[i] == self.posrow+1:
                                 if corridors[removedcorridor[i]][0] == self.poscol:
-                                    blocked = "yes"
-                        if blocked == "yes":
-                            legal = 0
+                                    blocked = True
+                        if blocked == True:
+                            legal = False
                             for i in range(0,16):
                                 rooom[i].mapupdate(poscol, posrow+1)
                             break
                         else: 
-                            legal = 1
+                            legal = True
                         if self.posrow+2 > 7:
-                            legal = 0
+                            legal = False
                             break
                         else:
                             self.posrow +=2
-                            legal = 1
+                            legal = True
                             playerposcol = self.poscol
                             playerposrow = self.posrow
                             break
-                    case "up":
+                    case "up"|"u":
                         for i in range(0,16):
                             if rooms[i] == "X":
                                 if rooom[i].posrow == posrow-2 and rooom[i].poscol == poscol:
                                     for i in range(0,16):
                                         rooom[i].mapupdate(poscol, posrow-1)
-                                    legal = 0
+                                    legal = False
                                     break
-                        if legal == 0:  
+                        if legal == False:  
                             break
                         for i in range(0,6):
                             if removedcorridor[i] == self.posrow-1:
                                 if corridors[removedcorridor[i]][0] == self.poscol:
-                                    blocked = "yes"
-                        if blocked == "yes":
-                            legal = 0
+                                    blocked = True
+                        if blocked == True:
+                            legal = False
                             for i in range(0,16):
                                 rooom[i].mapupdate(poscol, posrow-1)
                             break
                         else: 
-                            legal = 1
+                            legal = True
                         if self.posrow-2 < 0:
-                            legal = 0
+                            legal = False
                             break
                         else:
                             self.posrow -=2
@@ -473,14 +467,14 @@ class player:
             else: 
                 x = 0
                 while move != "no":
-                    blocked = "no"
+                    blocked = False
                     match move.lower():
-                        case "left":
+                        case "left"|"l":
                             for i in range(0,6):
                                 if removedcorridor[i] == self.posrow:
                                     if corridors[removedcorridor[i]][0] == self.poscol-1:
-                                        blocked = "yes"
-                            if blocked == "yes":
+                                        blocked = True
+                            if blocked == True:
                                 move = random.choice(randmove)
                             else:
                                 if self.poscol +2 > 7:
@@ -490,12 +484,12 @@ class player:
                                 else:
                                     self.poscol +=2
                                     break
-                        case "right":
+                        case "right"|"r":
                             for i in range(0,6):
                                 if removedcorridor[i] == self.posrow:
                                     if corridors[removedcorridor[i]][0]== self.poscol-1:
-                                        blocked = "yes"
-                            if blocked == "yes":
+                                        blocked = True
+                            if blocked == True:
                                 move = random.choice(randmove)
                             else:
                                 if self.poscol -2 < 0:
@@ -505,32 +499,34 @@ class player:
                                 else:
                                     self.poscol -=2
                                     break
-                        case "down":
+                        case "down"|"d":
                             for i in range(0,6):
                                 if removedcorridor[i] == self.posrow-1:
                                     if corridors[removedcorridor[i]][0] == self.poscol:
-                                        blocked = "yes"
-                            if blocked == "yes":
+                                        blocked = True
+                            if blocked == True:
                                 move = random.choice(randmove)
                             else:
                                 if self.posrow - 2 < 0:
                                     move = random.choice(randmove)
-                                elif True:
-                                    for i in range(0,16):
-                                        for i in range(0,16):
-                                            if rooms[i] == "X":
-                                                if rooom[i].posrow == posrow-2 and rooom[i].poscol == poscol:
-                                                    move = random.choice(randmove)
-                                                    break
+                                elif placementcol[0] == poscol and placementrow[0] == posrow-2:
+                                    move=random.choice(randmove)
+#                                elif True:
+#                                    for i in range(0,16):
+#                                        for i in range(0,16):
+#                                            if rooms[i] == "X":
+#                                                if rooom[i].posrow == posrow-2 and rooom[i].poscol == poscol:
+#                                                    move = random.choice(randmove)
+#                                                    break
                                 else: 
                                     self.posrow -=2
                                     break
-                        case "up":
+                        case "up"|"u":
                             for i in range(0,6):
                                     if removedcorridor[i] == self.posrow+1:
                                         if corridors[removedcorridor[i]][0] == self.poscol:
-                                            blocked = "yes"
-                            if blocked == "yes":
+                                            blocked = True
+                            if blocked == True:
                                 move = random.choice(randmove)
                             else:
                                 if self.posrow +2 > 7:
@@ -559,7 +555,7 @@ class player:
 
     def map(self, poscol, posrow):
         global admin
-        if admin == 0:
+        if admin == False:
             for i in range(0,16):
                 rooom[i].mapupdate(poscol, posrow)
             print("You check your map")
@@ -647,8 +643,8 @@ def gamestart():
     removedcorridor = [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6]
     random.shuffle(removedcorridor)
     win = 0
-    admin = 0
-    legal = 1
+    admin = False
+    legal = True
     playerposcol = 0
     playerposrow = 0
     newquiz = True
@@ -670,28 +666,31 @@ def gamestart():
         elif win == 2:
             break
         else:
-            blocked = "no"
-            action = input("What would you like to do: ")
+            blocked = False
+            if turn == 0:
+                action = "rules"
+            else:
+                action = input("What would you like to do: ")
             match action.lower():
                 case "move":
-                    mve = 1
-                    while mve == 1:
-                        move = input("Would you like to move up, down, right or left. If you would like to cancel, please type cancel: ")
-                        if move == "left" or move == "right" or move == "up" or move == "down":
+                    mve = True
+                    while mve == True:
+                        move = input("Would you like to move up, down, right or left. If you would like to cancel, please type cancel or press Enter: ")
+                        if move == "left" or move == "right" or move == "up" or move == "down" or move == "d" or move =="l" or move=="r" or move=="u":
                             #for i in range(0,16):
                             #    rooom[i].movecheck(playerposcol, playerposrow, move)
                             P1.move(playerposcol, playerposrow, move)
-                            mve = 0
-                            if legal == 1:
+                            mve = False
+                            if legal == True:
                                 turn+=1
                                 P2.move(player2poscol, player2posrow, move)
                                 for i in range(0,16):
                                     rooom[i].newcheck(playerposcol, playerposrow)
                             else:
-                                mve = 1
-                        elif move == "cancel": 
-                            mve = 0
-                        if mve == 1:
+                                mve = True
+                        elif move == "cancel" or "": 
+                            mve = False
+                        if mve == True:
                             print("That is not a direction you may move in. Please choose another direction.")
                         move = "0"
                 case "search"|"use":
@@ -711,12 +710,15 @@ def gamestart():
                     turn+=1
                     P1.P2movecheck()
                 case "rules"|"help":
+                    if turn == 0:
+                        turn=1
                     rule = 1
                     while rule != 0 and rule != "":
                         print("What rules are you confused about?")
                         print("Please enter the NUMBER that corresponds to your query: 1; What is the goal of the game. 2; What each type of room does. ")
                         print("3; What each item does. 4; What the entity is capable of. 5; How to read the map. ", "6; What each action does. ")
                         print("If you are softlocked and cannot beat the game type 'restart' as an action")
+                        print("If you already know the rules, please enter the number 0 to continue")
                         rule = input("Enter number here: ")
                         while rule != "rule":
                             if rule.isdigit() == True:
@@ -735,10 +737,11 @@ def gamestart():
                             else:
                                 print("That is not a integer, please enter a number: ")
                                 rule = input("Enter number here: ")
+
                 case "admin":
                     print("Welcome Admin.")
                     #rooom[i].Boardupdate()
-                    admin = 1
+                    admin = True
                 case "trophy":
                     P1.itempickup("Trophy")
                 case "restart":
@@ -757,7 +760,7 @@ if win == 1:
     print("Unluckily the entity you trapped isnt the only one")
     print("There are many more hiding away in their own caves")
     print("But you can stop them by going and stopping the others aswell")
-else:
+elif win == 2:
     print("You have fail to prevent the entity from escaping either due to foolishness or just bad luck.")
     print("It is loose upon the world")
     print("Luckily for you by itself it can only cause minimal to moderate amont of destruction")

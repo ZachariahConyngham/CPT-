@@ -60,19 +60,20 @@ scare enemy - starts in 2 rooms, forces player to run in a random direction when
 
 ## 20-5-2026
 - Coded the corridors
+- Found bug where entity movement was reversed
 
 ## 22-5-2026
 - worked on fixing the bug where is couldn't move from room to room
 
 ## 27-5-2026
-- Worked on fixing the bugs with the anti-players movement
+- Worked on fixing the bugs with the entity's movement
 
 ## 1-6-2026
 - Worked on the quiz
 
 ## 3-6-2026
 - Created replayablilty and lore
-- 
+- Created rules function and bugtested it
 
 ## 5-6-2026
 - Worked on testing and evaluation documentation
@@ -92,3 +93,8 @@ scare enemy - starts in 2 rooms, forces player to run in a random direction when
 ## 15-6-2026
 - Worked on the structure chart and DFD
 - 
+
+## 17-6-2036
+- Bug fixing
+- beta testing
+- implementing beta tester feedback

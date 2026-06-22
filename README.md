@@ -94,7 +94,16 @@ scare enemy - starts in 2 rooms, forces player to run in a random direction when
 - Worked on the structure chart and DFD
 - 
 
-## 17-6-2036
+## 17-6-2026
 - Bug fixing
 - beta testing
 - implementing beta tester feedback
+
+## 19-06-2026
+- System testing
+- Subsystem testing
+- Unit testing
+
+## 22-06-2026
+- 
+- 
